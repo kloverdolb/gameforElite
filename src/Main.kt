@@ -87,10 +87,17 @@ fun main() {
     }
     fun seestats(){
         println("""Характеристики всех Мстителей:
-        Урон: ${LifeAvengers.sumOf { it.damage }}
-        Здоровье: ${LifeAvengers.sumOf { it.health }}
-        Энергия: ${LifeAvengers.sumOf { it.energy }}
-            """)
+        ● Здоровье: ${LifeAvengers.sumOf { it.health }}
+        ● Урон: ${LifeAvengers.sumOf { it.damage }}
+        ● Энергия: ${LifeAvengers.sumOf { it.energy }}
+            !ВАЖНО: характеристики Мстителей повышаются в 2 раза, если собраны все камни.""")
+    }
+    fun seestatsOfThanos(){
+        println("""Танос:
+        ● Здоровье: ${thanos.health}/${thanos.maxhealth}
+        ● Урон: ${thanos.damage}
+        ● Энергия: ${thanos.energy}
+    """)
     }
     fun buystoneforpim(stone: Stones): Boolean{
         println("Вы уверены, что хотите потратить 10 ${pim.itemname}?")
@@ -584,6 +591,7 @@ ${quill.evilname} и по совместительству союзник Мст
                 "${sokol.name}" to {sokol.health-=sokol.health; false},
                 "Показатели ${widow.name}" to { avengerstats(person = widow); true },
                 "Показатели ${sokol.name}" to { avengerstats(person = sokol); true },
+                "Посмотреть суммарные характеристики команды Мстителей" to {seestats(); true},
                 "Показатели ${thanos.evilname}" to { enemystats(person = thanos); true }
             )
             menu(soulactions)
@@ -662,6 +670,7 @@ ${quill.evilname} и по совместительству союзник Мст
         "Посмотреть баланс" to {balance(); true},
         "Посмотреть Мстителей" to {seeLifeAvengers(); true},
         "Посмотреть суммарные характеристики команды Мстителей" to {seestats(); true},
+        "Посмотреть характеристики Таноса" to {enemystats(thanos); true},
         "Забранные камни" to {seestones(); true},
         "Пропустить 1 день за Частицы Пима" to {skip(); wasskip}
     )
