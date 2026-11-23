@@ -591,7 +591,7 @@ ${quill.evilname} и по совместительству союзник Мст
                 "${sokol.name}" to {sokol.health-=sokol.health; false},
                 "Показатели ${widow.name}" to { avengerstats(person = widow); true },
                 "Показатели ${sokol.name}" to { avengerstats(person = sokol); true },
-                "Посмотреть суммарные характеристики команды Мстителей" to {seestats(); true},
+                "Посмотреть суммарные характеристики Мстителей" to {seestats(); true},
                 "Показатели ${thanos.evilname}" to { enemystats(person = thanos); true }
             )
             menu(soulactions)
