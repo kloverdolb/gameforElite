@@ -103,7 +103,7 @@ fun main() {
         println("Вы уверены, что хотите потратить 10 ${pim.itemname}?")
         var quest = readln().lowercase()
         if (quest=="да") {
-            if (pim.itemvalue > 10.0) {
+            if (pim.itemvalue >= 10.0) {
                 pim.itemvalue -= 10
                 stoneslist.add(stone)
                 println("${stone.stone} был успешно получен! Камней бесконечности: ${stoneslist.size}/6. Возвращаемся в главное меню...")
@@ -120,7 +120,7 @@ fun main() {
         println("Вы уверены, что хотите потратить 50 ${vibranium.itemname}? [ДА/НЕТ]")
         var quest = readln().lowercase()
         if (quest=="да") {
-            if (vibranium.itemvalue > 50.0) {
+            if (vibranium.itemvalue >= 50.0) {
                 vibranium.itemvalue -= 50
                 stoneslist.add(stone)
                 println("${stone.stone} был успешно получен! Камней бесконечности: ${stoneslist.size}/6. Возвращаемся в главное меню...")
@@ -191,6 +191,14 @@ fun main() {
 
         }
     }
+    fun hulkandancient() {
+        arguinghulk.getVibranium()
+        output("""Халк попытался силой забрать камень, из-за чего был взят под контроль
+            |магией! Вы потеряли ${arguinghulk.randomlistvibr.min()} Осколков Вибраниума!
+        """.trimMargin())
+        Thread.sleep(500)
+        hulk.dialog("Ай! За что так?")
+    }
     fun getrealitystone(){
         println("Помогите Ракете достать ${realitystone.stone} из тела Джейн Фостер.")
         Thread.sleep(1000)
@@ -216,8 +224,13 @@ fun main() {
                     println("Значения кнопок: ${buttons.joinToString(" ")}")
                 }
                 else if (buttons[button-1] == "[✓]"){
+                    var randvibr = realitydone.getVibranium()
+                    var randpim = realitydone.getPims()
                     println("Вы нажали на правильную кнопку; вы угадали!")
+                    println("""Вы получили ${randvibr} Осколков вибраниума и ${randpim} Частиц Пима.""")
                     println("Значения кнопок: ${buttons.joinToString(" ")}")
+                    vibranium.itemvalue += randvibr
+                    pim.itemvalue += randpim
                     return
                 }
                 else {
@@ -225,6 +238,7 @@ fun main() {
                     var randpim = reality.getPims()
                     println("""Вы нажали на неправильную кнопку; вы потеряли ${randvibr} Осколков вибраниума и
 ${randpim} Частиц Пима.""")
+                    println("Значения кнопок: ${buttons.joinToString(" ")}")
                     vibranium.itemvalue -= randvibr
                     pim.itemvalue -= randpim
                 }
@@ -350,7 +364,7 @@ ${quill.evilname} и по совместительству союзник Мст
         )
         menu(mainactions)
     }
-
+    //функция действий на локации с камнем пространства
     var claimspacestone = false
     fun tospacestone() {
         if (claimspacestone == false) {
@@ -424,6 +438,7 @@ ${quill.evilname} и по совместительству союзник Мст
         )
         menu(mainactions)
     }
+    //функция действий на локации с камнем времени
     var claimtimestone = false
     fun totimestone(){
         if (claimtimestone == false) {
@@ -443,8 +458,11 @@ ${quill.evilname} и по совместительству союзник Мст
             output("После этого Брюс замечает талисман с камнем на шее у Древней")
             println()
             Thread.sleep(500)
-            hulk.dialog("Хотя знаете, он и не особо нужен, дайте лишь вон тот камешек...")
-            Thread.sleep(500)
+            val timeactions = listOf(
+                "Попытаться выхватить камень" to {hulkandancient(); false},
+                "Попросить камень" to {hulk.dialog("Послушайте, не могли бы вы дать эту штучку у вас на шее?"); false},
+            )
+            menu(timeactions)
             ancient.dialog("""Исключено! Я - Древняя, Верховный чародей, и моя задача охранять 
 Землю от внешнего вторжения врагов. Наше главное оружие против них - ${timestone.stone}. Именно благодаря нему
 я способна знать разные варианты событий в будущем, в том числе и появление Доктора Стрэнджа.""")
@@ -472,6 +490,7 @@ ${quill.evilname} и по совместительству союзник Мст
         )
         menu(mainactions)
     }
+    //функция действий на локации с камнем реальности
     var claimrealitystone = false
     fun torealitystone() {
         if (claimrealitystone==false) {
@@ -545,6 +564,7 @@ ${quill.evilname} и по совместительству союзник Мст
         )
         menu(mainactions)
     }
+    //функция действий на локации с камнем души
     var claimsoulstone = false
     fun tosoulstone(){
         if (claimsoulstone == false){
@@ -632,6 +652,7 @@ ${quill.evilname} и по совместительству союзник Мст
         println("${soulstone.stone} был получен. Камней бесконечности: ${stoneslist.size}/6. Возвращаемся в главное меню...")
 
     }
+    //функция пропуска дня
     var avalaibleskip = true
     var wasskip = true
     fun skip(){
@@ -645,7 +666,7 @@ ${quill.evilname} и по совместительству союзник Мст
                 println("""Тони Старк и Капитан Америка в связи с недостатком Частиц Пима возвращаются в прошлое,
                     |на военную базу. Энергия всех Мстителей уменьшается на 20%, вы получаете 10 Частиц Пима
                 """.trimMargin())
-                pim.itemvalue += 10
+                skipped.getPims()
                 avalaibleskip = false
                 wasskip = false
             }else{
@@ -679,7 +700,11 @@ ${quill.evilname} и по совместительству союзник Мст
     rulesaboutgame()
 
     for (day in 1..8 ) {
-        println("День ${day}")
+        if (day < 8) {
+            println("День ${day}")
+        }else{
+            println("Дополнительный день. Докупите недостающий камень Бесконечности.")
+        }
         menu(mainactions)
         if (powerstone in stoneslist) {
             mainactions.removeAll{it.first == "Отправиться за ${powerstone.stone}"}

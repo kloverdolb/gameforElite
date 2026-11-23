@@ -257,6 +257,18 @@ fun output(text: String) {
     }
     println()
 }
+//класс событий, которые имеют фиксированный эффект
+class Fixed(randomlistvibr: List<Double>, randomlistpim: List<Double>): Events(randomlistvibr, randomlistpim) {
+    override fun getVibranium(): Double {
+        vibranium.itemvalue -= (randomlistvibr).min()
+        return vibranium.itemvalue
+    }
+
+    override fun getPims(): Double {
+        pim.itemvalue += (randomlistpim).min()
+        return pim.itemvalue
+    }
+}
 //функция пропуска одного дня для увеличения энергии персонажей
 fun menu(actions: List<Pair<String, () -> Boolean>>) {
     while (true) {
@@ -285,6 +297,9 @@ val claimedluggage = Events(listOf(20.0,30.0), listOf(0.0,0.0))
 val numberguessr = Events(listOf(20.0,30.0), listOf(0.0,0.0))
 val fightwithloki = Events(loki.randlistVib, loki.randlistPim)
 val reality = Dependent(listOf(0.1, 0.3), listOf(0.2, 0.4))
+val realitydone = Dependent(listOf(0.05, 0.1), listOf(0.1, 0.2))
+val skipped = Fixed(listOf(0.0), listOf(10.0))
+val arguinghulk = Fixed(listOf(10.0), listOf(0.0))
 //создание переменных, которая хранит изменение валют
 var listoffixedvibr = mutableListOf<Double>()
 var listoffixedpim = mutableListOf<Double>()
