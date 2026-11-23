@@ -154,7 +154,7 @@ fun afterclaiming(){
     println()
     thanos.dialog("Довольно разговоров. Даже возвращение ваших войск вам ничего не даст.")
     Thread.sleep(500)
-    thor.dialog("А вот это мы сейчас и узнаем...")
+    thor.dialog("А вот это мы сейчас и узнаем")
     Thread.sleep(500)
     cap.dialog("Мстители... К бою!")
     Thread.sleep(500)
