@@ -49,26 +49,5 @@ val nebulaDesc = """
     Киборг и приёмная дочь Таноса, перешедшая на сторону героев.
     Знает слабости Безумного Титана и отлично ориентируется в космосе.
 """.trimIndent()
-//создание обьектов класса мстителей
-val iron = Avengers("Тони Старк", 50, 300, "Железный человек", 100, ironDesc)
-val cap = Avengers("Стив Роджерс", 30, 380, "Капитан Америка", 50, capDesc)
-val widow = Avengers("Наталья Романофф", 20, 200, "Черная вдова", 100, widowDesc)
-val ant = Avengers("Скотт Лэнг", 40, 300, "Человек-муравей", 50, antDesc)
-val sokol = Avengers("Клинт Бартон", 30, 250, "Соколиный глаз", 50, sokolDesc)
-val hulk = Avengers("Брюс Беннер", 50, 500, "Халк", 25, hulkDesc)
-val rocket = Avengers("Ракета", 30, 250, "Ракета", 70, rocketDesc)
-val thor = Avengers("Тор", 50, 400, "Бог грома", 50, thorDesc)
-val roud = Avengers("Джеймс Роудс", 40, 280, "Воитель", 110, roudDesc)
-val nebula = Avengers("Небула", 20, 300, "Небула", 75, nebulaDesc)
-val spider = Person("Питер Паркер")
-var avengersteam = Avengers("Команда Мстителей", LifeAvengers.map{it.damage}.sum(),LifeAvengers.map{it.health}.sum(), "Команда Мстителей", LifeAvengers.map{it.energy}.sum(), "-" )
-//все мстители
-val allavengers = listOf(iron, cap, widow, ant, thor, roud, nebula, rocket, hulk, sokol)
-//создание объектов-камней бесконечности
-val timestone = Stones("Камень времени", green)
-val spacestone = Stones("Камень пространства", blue)
-val mindstone = Stones("Камень разума", yellow)
-val realitystone = Stones("Камень реальности", red)
-val powerstone = Stones("Камень силы", purple)
-val soulstone = Stones("Камень души", orange)
+
 

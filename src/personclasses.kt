@@ -1,37 +1,3 @@
-import kotlin.math.roundToInt
-import kotlin.random.Random
-
-val red = "\u001b[31m"
-val green = "\u001b[32m"
-val blue = "\u001b[34m"
-val purple = "\u001b[95m"
-val orange = "\u001b[38;5;208m"
-val yellow = "\u001b[33m"
-val reset = "\u001b[0m"
-//создание списка камней бесконечности - которые уже в инвентаре
-val stoneslist = mutableListOf<Stones>()
-//создание списка всех камней - для наглядного отображения в меню
-val allstones = mutableListOf<Stones>()
-//Создание дата-класса ресурсов и их задание через обьекты
-val maxvibranium: Double = 1000.0
-val maxpim: Double = 100.0
-data class Resourses(val itemname: String, val itemshape: String, val itemcolor: String, var maxvalue: Double){
-    val coloritemshape = "${itemcolor}$itemshape$reset"
-    var itemvalue: Double = maxvalue
-        set(value3) {
-            field = value3.coerceIn(0.0, maxvalue)
-        }
-}
-var pim = Resourses("Частицы Пима", "Ⓟ",red,100.0)
-var vibranium = Resourses("Осколки вибраниума", "❖",purple,1000.0)
-//дата класс камней бесконечности
-data class Stones(val item: String, val color: String){
-    val stone = "${color}$item$reset"
-    val shape = "${color}⬢$reset"
-    val shapeinlist: String
-        get() = if (this !in stoneslist) "⬢" else "${color}⬢$reset"
-}
-
 //создания класса нпс - имя и функция включения в беседу
 class Person(val name: String) {
     fun dialog(phrase: String) {
@@ -229,77 +195,22 @@ class Enemy(override val name:String, override var damage: Int, override val max
         println("$name: $phrase")
     }
 }
-//создание класса событий и его наследника dependent
-open class Events(var randomlistvibr: List<Double>, var randomlistpim: List<Double>){
-    open fun getVibranium(): Double {
-        return (Random.nextDouble(randomlistvibr[0], randomlistvibr[1])*100).roundToInt()/100.0
-    }
-    open fun getPims(): Double {
-        return (Random.nextDouble(randomlistpim[0], randomlistpim[1])*100).roundToInt()/100.0
-    }
-}
-//класс событий, которые зависят от текущих ресурсов
-class Dependent(randomlistvibr: List<Double>, randomlistpim: List<Double>): Events(randomlistvibr, randomlistpim) {
-    override fun getVibranium(): Double {
-        val a = vibranium.itemvalue * (Random.nextDouble(randomlistvibr[0], randomlistvibr[1])*100).roundToInt()/100.0
-        return (a * 100).roundToInt() / 100.0
-    }
-    override fun getPims(): Double {
-        val a = pim.itemvalue * (Random.nextDouble(randomlistpim[0], randomlistpim[1])*100).roundToInt()/100.0
-        return (a * 100).roundToInt() / 100.0
-    }
-}
-//функция для вывода реплик с эффектом "печати"
-fun output(text: String) {
-    for (char in text) {
-        print(char)
-        Thread.sleep(40)
-    }
-    println()
-}
-//класс событий, которые имеют фиксированный эффект
-class Fixed(randomlistvibr: List<Double>, randomlistpim: List<Double>): Events(randomlistvibr, randomlistpim) {
-    override fun getVibranium(): Double {
-        vibranium.itemvalue -= (randomlistvibr).min()
-        return vibranium.itemvalue
-    }
-
-    override fun getPims(): Double {
-        pim.itemvalue += (randomlistpim).min()
-        return pim.itemvalue
-    }
-}
-//функция пропуска одного дня для увеличения энергии персонажей
-fun menu(actions: List<Pair<String, () -> Boolean>>) {
-    while (true) {
-        for (i in actions.indices) {
-            println("${i + 1} - ${actions[i].first}")
-        }
-        print("Выберите действие: ")
-        val ch = readln().toIntOrNull()
-        if (ch != null && ch in 1..actions.size) {
-            val scontinue = actions[ch - 1].second()
-            if (!scontinue) {
-                return
-            }
-        }
-        else println("Неверный ввод. Попробуйте снова.")
-    }
-}
-var mainactions = mutableListOf<Pair<String, () -> Boolean>>()
+//создание обьектов класса мстителей
+val iron = Avengers("Тони Старк", 50, 300, "Железный человек", 100, ironDesc)
+val cap = Avengers("Стив Роджерс", 30, 380, "Капитан Америка", 50, capDesc)
+val widow = Avengers("Наталья Романофф", 20, 200, "Черная вдова", 100, widowDesc)
+val ant = Avengers("Скотт Лэнг", 40, 300, "Человек-муравей", 50, antDesc)
+val sokol = Avengers("Клинт Бартон", 30, 250, "Соколиный глаз", 50, sokolDesc)
+val hulk = Avengers("Брюс Беннер", 50, 500, "Халк", 25, hulkDesc)
+val rocket = Avengers("Ракета", 30, 250, "Ракета", 70, rocketDesc)
+val thor = Avengers("Тор", 50, 400, "Бог грома", 50, thorDesc)
+val roud = Avengers("Джеймс Роудс", 40, 280, "Воитель", 110, roudDesc)
+val nebula = Avengers("Небула", 20, 300, "Небула", 75, nebulaDesc)
+val spider = Person("Питер Паркер")
+var avengersteam = Avengers("Команда Мстителей", LifeAvengers.map{it.damage}.sum(),LifeAvengers.map{it.health}.sum(), "Команда Мстителей", LifeAvengers.map{it.energy}.sum(), "-" )
+//все мстители
+val allavengers = listOf(iron, cap, widow, ant, thor, roud, nebula, rocket, hulk, sokol)
 //создание противников
 val quill = Enemy("Питер Квилл", 30, 280, 0, "Звёздный Лорд", listOf(40.0, 50.0), listOf(3.0, 5.0))
 val loki = Enemy("Локи", 50, 600, 0,  "Локи", listOf(80.0, 100.0), listOf(5.0, 8.0))
 val thanos = Enemy("Танос",600,5200, 900, "Безумный Титан", listOf(), listOf())
-//Создание событий
-val quillfight = Events(quill.randlistVib, quill.randlistPim)
-val claimedluggage = Events(listOf(20.0,30.0), listOf(0.0,0.0))
-val numberguessr = Events(listOf(20.0,30.0), listOf(0.0,0.0))
-val fightwithloki = Events(loki.randlistVib, loki.randlistPim)
-val reality = Dependent(listOf(0.1, 0.3), listOf(0.2, 0.4))
-val realitydone = Dependent(listOf(0.05, 0.1), listOf(0.1, 0.2))
-val skipped = Fixed(listOf(0.0), listOf(10.0))
-val arguinghulk = Fixed(listOf(10.0), listOf(0.0))
-//создание переменных, которая хранит изменение валют
-var listoffixedvibr = mutableListOf<Double>()
-var listoffixedpim = mutableListOf<Double>()

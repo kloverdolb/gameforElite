@@ -1,5 +1,4 @@
 import kotlin.Int
-import kotlin.random.Random
 import kotlin.time.TimeSource
 import kotlin.math.roundToInt
 import kotlin.time.DurationUnit
@@ -73,6 +72,7 @@ fun main() {
     fun seeLifeAvengers(){
         val avengerMenu= mutableListOf<Pair<String, () -> Boolean>>()
         println("Информация о мстителях в игре:")
+        LifeAvengers.sortBy { it.health }
         for (i in LifeAvengers) {
             avengerMenu.add("${i.avengername}" to { avengerstats(i)
                 false
